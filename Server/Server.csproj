@@ -65,8 +65,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chat2\Chat.csproj">
-      <Project>{fb4461da-2c9c-45e2-9d02-a60e1cf85ab9}</Project>
+    <ProjectReference Include="..\Chat\Chat.csproj">
+      <Project>{66e23ce8-d513-433f-98c6-3047b1e2dccc}</Project>
       <Name>Chat</Name>
     </ProjectReference>
   </ItemGroup>
