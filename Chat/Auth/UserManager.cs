@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chat.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,7 +37,7 @@ namespace Chat.Auth
         {
             User user = userList.FirstOrDefault(m => m.Login == login);
             if (user != null)
-                Console.WriteLine($"## Пользователь с именем {login} уже существует");
+                throw new UserAlreadyExistException($"Пользователь с именем {login} уже существует");
             else
                 UserList.Add(new User(login));
         }
@@ -50,7 +51,7 @@ namespace Chat.Auth
             User userToDelete = userList.FirstOrDefault(m => m.Login == login);
 
             if (userToDelete != null)
-                Console.WriteLine($"Пользователя с именем {login} не существует");
+                throw new UserUnknownException($"Пользователя с именем {login} не существует");
             else
                 UserList.Remove(userToDelete);
         }
@@ -64,10 +65,7 @@ namespace Chat.Auth
         {
             User getUser = userList.FirstOrDefault(m => m.Login == other.Login);
             if (getUser != null)
-            {
-                Console.WriteLine($"## Пользователь с именем {other.Login} уже существует");
-                return null;
-            }
+                throw new UserUnknownException($"Пользователя с именем {other.Login} не существует");
             else
                 return getUser;
         }
@@ -79,7 +77,14 @@ namespace Chat.Auth
         /// <param name="password">Вводимый пароль</param>
         public void authentify(string login, string password)
         {
-           
+            User getUser = userList.FirstOrDefault(m => m.Login == login);
+            if (getUser != null)
+            {
+                if (getUser.Password != password)
+                    throw new WrongPasswordException("Неверный пароль");
+            }
+            else
+                throw new WrongLoginException($"Пользователь с именем {login} не зарегистрирован");
         }
     }
 }

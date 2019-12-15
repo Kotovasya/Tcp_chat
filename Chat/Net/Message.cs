@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Chat.Net
 {
+    [Serializable]
     public class Message
     {
-        public enum Header { Connect, Disconnect, CreateR, JoinR, LeaveR, SendMessage }
+        public enum Header { Registration, Login, Disconnect, SendMessage, GetUsers, NewUser }
         private Header head;
         private List<string> messageList;
 

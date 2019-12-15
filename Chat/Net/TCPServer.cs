@@ -67,7 +67,7 @@ namespace Chat.Net
         }
 
         /// <summary>
-        /// Получает сообщение от клиента
+        /// Получает сообщение от клиента по сокету
         /// </summary>
         /// <param name="socket">Прослушиваемый клиентский сокет</param>
         /// <returns></returns>
@@ -96,13 +96,11 @@ namespace Chat.Net
         /// <param name="socket">Клиентский сокет, которому отправляем</param>
         public void sendMessage(Message message, Socket socket)
         {
-            Console.WriteLine("TCP Server отправляет сообщение...");
             try
             {
                 NetworkStream stream = new NetworkStream(socket);
                 IFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(stream, message);
-                Console.WriteLine("TCP Server успешно отправил сообщение типа: " + message.Head);
             }
             catch (Exception ex)
             {

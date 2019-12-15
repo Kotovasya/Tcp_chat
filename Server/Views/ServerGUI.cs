@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,6 +16,9 @@ namespace Server.Views
     {
         TextWriter writer = null;
         private Server server;
+
+        [DllImport("user32.dll")]
+        static extern bool HideCaret(IntPtr hWnd);
 
         public ServerGUI()
         {
@@ -29,7 +33,7 @@ namespace Server.Views
         }
 
         /// <summary>
-        /// Кнопка включения/отключения сервера
+        /// Событие при нажатии на кнопку включения/отключения сервера
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -54,6 +58,21 @@ namespace Server.Views
                 startButton.Text = "Start server";
                 server.stopServer();
             }
+        }
+
+        private void ServerGUI_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void TxtConsole_Enter(object sender, EventArgs e)
+        {
+            HideCaret(txtConsole.Handle);
+        }
+
+        private void ServerGUI_Shown(object sender, EventArgs e)
+        {
+            HideCaret(txtConsole.Handle);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Chat.Net;
+﻿using Chat.Exceptions;
+using Chat.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,13 +37,9 @@ namespace Chat.Auth
         {
             Session session = sessionList.FirstOrDefault(m => m.Token == other.Token);
             if (session == null)
-            {
                 SessionList.Add(other);
-                Console.WriteLine($"Сессия с токеном {other.Token} успешно добавлена");
-            }
             else
-                Console.WriteLine($"## При добавлении сессии возникла ошибка. Токен {other.Token} уже существует");
-
+                throw new SessionAlreadyExistException($"Сессия с токеном {other.Token} уже существует");
         }
 
         /// <summary>
@@ -52,14 +49,29 @@ namespace Chat.Auth
         public void removeSession(Guid token)
         {
             Session sessionToDelete = sessionList.FirstOrDefault(m => m.Token == token);
-
             if (sessionToDelete == null)
-                Console.WriteLine($"## При удалении сессии возникла ошибка. Токен {token} не существует");
+                throw new SessionUnknownException($"Сессия с токеном {token} не существует");
             else
-            {
                 SessionList.Remove(sessionToDelete);
-                Console.WriteLine($"Сессия с токеном {token} успешно удалена.");
-            }
+            
+        }
+
+        public void setUser(Guid token, string login, string password)
+        {
+            int index = sessionList.FindIndex(m => m.Token == token);
+            if (index == -1)
+                throw new SessionUnknownException($"Сессия с токеном {token} не существует");
+            else
+                SessionList[index].User = new User(login, password);
+        }
+
+        public User getUser(Guid token)
+        {
+            User user = sessionList.FirstOrDefault(m => m.Token == token).User;
+            if (user == null)
+                throw new SessionUnknownException($"Сессия с токеном {token} не существует");
+            else
+                return user;
         }
     }
 }

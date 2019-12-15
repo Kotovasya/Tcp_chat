@@ -42,6 +42,7 @@
             this.txtConsole.ReadOnly = true;
             this.txtConsole.Size = new System.Drawing.Size(748, 500);
             this.txtConsole.TabIndex = 0;
+            this.txtConsole.Enter += new System.EventHandler(this.TxtConsole_Enter);
             // 
             // startButton
             // 
@@ -81,7 +82,9 @@
             this.Controls.Add(this.txtConsole);
             this.Name = "ServerGUI";
             this.Text = "ServerGUI";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ServerGUI_FormClosed);
             this.Load += new System.EventHandler(this.ServerGUI_Load);
+            this.Shown += new System.EventHandler(this.ServerGUI_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

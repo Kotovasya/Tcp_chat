@@ -16,6 +16,7 @@ namespace Chat.Net
         protected Boolean connected;
         protected TcpClient tcpClient;
         protected IPAddress ip;
+        protected bool quit;
 
         public int Port
         {
@@ -40,6 +41,13 @@ namespace Chat.Net
             ip = null;
             tcpClient = null;
         }
+
+        public bool Quit
+        {
+            get { return quit; }
+            set { quit = value; }
+        }
+
         /// <summary>
         /// Установить подключаемый TCP сервер
         /// </summary>

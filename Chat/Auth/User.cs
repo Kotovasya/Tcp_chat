@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Chat.Auth
 {
     [Serializable()]
-    public class User : IComparable<User>
+    public class User
     {
         string login;
         string password;
@@ -36,19 +36,10 @@ namespace Chat.Auth
             this.password = password;
         }
 
-        /// <summary>
-        /// Проверка входа
-        /// </summary>
-        /// <param name="other">Введенные параметры</param>
-        /// <returns></returns>
-        public int CompareTo(User other)
+        public User()
         {
-            if (this.login == other.login)
-            {
-                return 0;
-            }
-
-            return -1;
+            this.login = "";
+            this.password = "";
         }
     }
 }
