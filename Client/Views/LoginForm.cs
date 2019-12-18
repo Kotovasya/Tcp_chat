@@ -16,45 +16,17 @@ namespace Client
 {
     public partial class LoginForm : Form
     {
-        private Client client;
+        Client client;
+
         public LoginForm()
         {
             InitializeComponent();
         }
 
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-            ConnectToServer();
-        }
-
-        private void RegisterButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Message message = new Message(Message.Header.Registration);
-                message.addData(userNameTextBox.Text);
-                message.addData(passwordTextBox.Text);
-                client.sendMessage(message);
-
-                Message reply = client.getMessage();
-
-                if (reply == null)
-                    MessageBox.Show("Сервер не дал ответа", "Ошибка соединения", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                if (reply.MessageList.First() == "success")
-                    ShowChat();
-                else
-                    MessageBox.Show(reply.MessageList.First(), "Ошибка регистрации", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка регистрации", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            try
+            setConnect(sender);
+            if (client.Connected)
             {
                 Message message = new Message(Message.Header.Login);
                 message.addData(userNameTextBox.Text);
@@ -64,50 +36,92 @@ namespace Client
                 Message reply = client.getMessage();
 
                 if (reply == null)
-                    MessageBox.Show("Сервер не дал ответа", "Ошибка соединения", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                if (reply.MessageList.First() == "success")
-                    ShowChat();
+                {
+                    showError(sender);
+                }
+                else if (reply.MessageList[0] == "success")
+                {
+                    showChat();
+                }
                 else
-                    MessageBox.Show(reply.MessageList.First(), "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                {
+                    MessageBox.Show(reply.MessageList[0], "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
-        private void ShowChat()
+        private void RegisterButton_Click(object sender, EventArgs e)
+        {
+            setConnect(sender);
+            if (client.Connected)
+            {
+                Message message = new Message(Message.Header.Registration);
+                message.addData(userNameTextBox.Text);
+                message.addData(passwordTextBox.Text);
+                client.sendMessage(message);
+
+                Message reply = client.getMessage();
+
+                if (reply == null)
+                {
+                    showError(sender);
+                }
+                else if (reply.MessageList[0] == "success")
+                {
+                    showChat();
+                }
+                else
+                {
+                    MessageBox.Show(reply.MessageList[0], "Ошибка регистрации", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Установить подключение к серверу
+        /// </summary>
+        protected void setConnect(object sender)
+        {
+            if (client == null)
+            {
+                try
+                {
+                    client = new Client();
+                    client.IP = IPAddress.Parse("127.0.0.1");
+                    client.Port = 2020;
+                    client.connect();
+                }
+                catch { showError(sender); }
+            }
+        }
+
+        protected void showChat()
         {
             client.User = new User(userNameTextBox.Text, passwordTextBox.Text);
             var frm = new Views.Chat(client);
             frm.Location = this.Location;
             frm.StartPosition = FormStartPosition.Manual;
-            frm.FormClosing += delegate { this.Show(); };
+            frm.FormClosing += delegate {
+                client = null;
+                this.Show();
+            };
             frm.Show();
             this.Hide();
         }
 
-        private void ConnectToServer()
+        protected void showError(object sender)
         {
-            try
+            DialogResult result = MessageBox.Show("Ошибка подключения", "Не удалось соединиться с сервером, повторить попытку?", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+            if (result == DialogResult.Retry)
             {
-                client = new Client();
-                client.setServer(IPAddress.Parse("127.0.0.1"), 2020);
-                client.connect();
-                client.run();
-            }
-            catch (Exception ex)
-            {
-                DialogResult result = MessageBox.Show(
-                    ex.Message,
-                    "Ошибка соединения",
-                    MessageBoxButtons.RetryCancel,
-                    MessageBoxIcon.Error);
-                if (result == DialogResult.Retry)
-                    ConnectToServer();
+                if (sender.Equals(LoginButton))
+                {
+                    LoginButton_Click(sender, new EventArgs());
+                }
                 else
-                    Application.Exit();
+                {
+                    RegisterButton_Click(sender, new EventArgs());
+                }
             }
         }
     }

@@ -39,7 +39,7 @@ namespace Chat.Auth
             if (user != null)
                 throw new UserAlreadyExistException($"Пользователь с именем {login} уже существует");
             else
-                UserList.Add(new User(login));
+                UserList.Add(new User(login, password));
         }
 
         /// <summary>

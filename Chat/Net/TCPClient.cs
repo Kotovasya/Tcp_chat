@@ -16,7 +16,6 @@ namespace Chat.Net
         protected Boolean connected;
         protected TcpClient tcpClient;
         protected IPAddress ip;
-        protected bool quit;
 
         public int Port
         {
@@ -42,40 +41,23 @@ namespace Chat.Net
             tcpClient = null;
         }
 
-        public bool Quit
-        {
-            get { return quit; }
-            set { quit = value; }
-        }
-
-        /// <summary>
-        /// Установить подключаемый TCP сервер
-        /// </summary>
-        /// <param name="ip">IP сервера</param>
-        /// <param name="port">Порт сервера</param>
-        public void setServer(IPAddress ip, int port)
-        {
-            IP = ip;
-            Port = port;
-        }
-
         /// <summary>
         /// Подключение к установленному TCP серверу
         /// </summary>
         public void connect()
         {
-            try
-            {
-                Console.WriteLine($"Попытка подключения к {IP.ToString()}:{Port}...");
-                tcpClient = new TcpClient(IP.ToString(), Port);
-                Connected = true;
-                Console.WriteLine("Успшено подключено");
-            }
-            catch (SocketException ex)
-            {
-                Console.WriteLine("## TCP Server отказал в подключении, исключение:" + ex.Message);
-                Connected = false;
-            }
+            Console.WriteLine($"Попытка подключения к {IP.ToString()}:{Port}...");
+            tcpClient = new TcpClient(IP.ToString(), Port);
+            Connected = true;
+        }
+
+        /// <summary>
+        /// Отправляет серверу уведомление об отключении клиента от него
+        /// </summary>
+        public void disconnect()
+        {
+            sendMessage(new Message(Message.Header.Disconnect));
+            connected = false;
         }
 
         /// <summary>
@@ -92,7 +74,6 @@ namespace Chat.Net
                     NetworkStream stream = tcpClient.GetStream();
                     IFormatter formatter = new BinaryFormatter();
                     Message message = (Message)formatter.Deserialize(stream);
-                    Console.WriteLine("Тип полученного сообщения: " + message.Head);
                     return message;
                 }
                 catch (Exception ex)
@@ -118,8 +99,6 @@ namespace Chat.Net
                     NetworkStream stream = tcpClient.GetStream();
                     IFormatter formatter = new BinaryFormatter();
                     formatter.Serialize(stream, message);
-                    Console.WriteLine($"Сообщение типа {message.Head} успешно отправлено");
-
                 }
                 catch (Exception ex)
                 {

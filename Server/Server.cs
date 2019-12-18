@@ -55,7 +55,7 @@ namespace Server
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("При принятии сообщения произошло исключение: " + ex.Message);
+                    Console.WriteLine("## При принятии сообщения произошло исключение: " + ex.Message);
                 }
                 Thread.Sleep(5);
             }
@@ -75,7 +75,6 @@ namespace Server
                     Session session = new Session();
                     session.Client = client;
                     sessionManager.addSession(session);
-                    Console.WriteLine($"Новый клиент подключен ({session.Token})");
                 }
                 catch (SocketException ex)
                 {
@@ -142,6 +141,7 @@ namespace Server
                         try
                         {
                             userManager.authentify(message.MessageList[0], message.MessageList[1]);
+                            sessionManager.setUser(session.Token, message.MessageList[0], message.MessageList[1]);
                             shortSend(Message.Header.Login, "success", session.Client.Client);
                             Console.WriteLine($"Пользователь ({message.MessageList[0]}) авторизовался");
                             foreach (Session localsession in sessionManager.SessionList)
