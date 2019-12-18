@@ -1,5 +1,4 @@
-﻿using Server.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +11,29 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.Run(new ServerGUI());
+            startServer();
+        }
+
+        private static void startServer()
+        {
+            Server server = new Server();
+            server.startServer(2020);
+
+            if (server.Running)
+                server.run();
+            else
+                Console.WriteLine("Не удалось запустить сервер.");
+
+            while (server.Running && Console.ReadLine() != "stop")
+            {
+
+            }
+
+            server.stopServer();
+
+            Console.WriteLine("Сервер был остановлен, запустить его снова? (Y)");
+            if (Console.ReadLine().ToLower() == "y")
+                startServer();
         }
     }
 }

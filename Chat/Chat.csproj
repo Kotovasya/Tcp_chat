@@ -45,9 +45,14 @@
     <Compile Include="Auth\SessionManager.cs" />
     <Compile Include="Auth\User.cs" />
     <Compile Include="Auth\UserManager.cs" />
+    <Compile Include="ChatRoom\Chatroom.cs" />
+    <Compile Include="ChatRoom\ChatroomManager.cs" />
+    <Compile Include="Exceptions\ChatroomAlreadyExistException.cs" />
+    <Compile Include="Exceptions\ChatroomUnknownException.cs" />
     <Compile Include="Exceptions\SessionUnknownException.cs" />
     <Compile Include="Exceptions\SessionAlreadyExistException.cs" />
     <Compile Include="Exceptions\UserAlreadyExistException.cs" />
+    <Compile Include="Exceptions\UserAlreadyInChatroom.cs" />
     <Compile Include="Exceptions\UserUnknownException.cs" />
     <Compile Include="Exceptions\WrongLoginException.cs" />
     <Compile Include="Exceptions\WrongPasswordException.cs" />

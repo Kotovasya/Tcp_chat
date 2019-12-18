@@ -86,5 +86,14 @@ namespace Chat.Auth
             else
                 throw new WrongLoginException($"Пользователь с именем {login} не зарегистрирован");
         }
+
+        public void setUserCR(int idCR, string login)
+        {
+            int index = userList.FindIndex(m => m.Login == login);
+            if (index != -1)
+            {
+                userList[index].IdChatroom = idCR;
+            }
+        }
     }
 }

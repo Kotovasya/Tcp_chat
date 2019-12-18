@@ -11,6 +11,7 @@ namespace Chat.Auth
     {
         string login;
         string password;
+        int idChatroom;
 
         public string Login
         {
@@ -24,22 +25,27 @@ namespace Chat.Auth
             set { password = value; }
         }
 
+        public int IdChatroom { get => idChatroom; set => idChatroom = value; }
+
         public User(string login)
         {
             this.login = login;
             this.password = "";
+            this.IdChatroom = -1;
         }
 
         public User(string login, string password)
         {
             this.login = login;
             this.password = password;
+            this.IdChatroom = -1;
         }
 
         public User()
         {
             this.login = "";
             this.password = "";
+            this.IdChatroom = -1;
         }
     }
 }

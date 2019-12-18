@@ -9,7 +9,7 @@ namespace Chat.Net
     [Serializable]
     public class Message
     {
-        public enum Header { Registration, Login, Disconnect, SendMessage, GetUsers, NewUser }
+        public enum Header { Registration, Login, Disconnect, SendMessage, GetUsers, NewUser, CreateCR, JoinCR, LeaveCR, DeleteCR, GetCR }
         private Header head;
         private List<string> messageList;
 

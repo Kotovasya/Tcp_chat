@@ -63,7 +63,7 @@ namespace Chat.Net
         {
             this.Running = false;
             tcpListener.Stop();
-            Console.WriteLine("Сервер остановлен");
+            Console.WriteLine("Сервер остановлен администратором");
         }
 
         /// <summary>

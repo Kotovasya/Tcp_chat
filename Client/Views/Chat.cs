@@ -1,4 +1,5 @@
 ﻿using Chat.Auth;
+using Chat.ChatRoom;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,12 +26,15 @@ namespace Client.Views
 
         private void Chat_Load(object sender, EventArgs e)
         {
-            userList.DataSource = client.OnlineUsers;
+            nameList.DataSource = client.Chatrooms;
             messages.DataSource = client.Messages;
+
 
             client.run();
 
-            Message message = new Message(Message.Header.GetUsers);
+            client.changeList += changeList;
+
+            Message message = new Message(Message.Header.GetCR);
             client.sendMessage(message);
         }
 
@@ -61,6 +65,73 @@ namespace Client.Views
                 messageTextBox.Text = string.Empty;
                 messageTextBox.Focus();
             }
+        }
+
+        //Нужно сделать доступ в этом потоке к элементам формы
+        private void changeList(bool isJoin)
+        {
+            if (isJoin)
+            {
+                Message message = new Message(Message.Header.GetUsers);
+                message.addData(client.Chatroom.Id.ToString());
+                client.sendMessage(message);
+                nameList.DataSource = client.ChatUsers;
+                //nameList.SelectedIndex = -1;
+                //nameList.SelectionMode = SelectionMode.None;
+                crButton.Click -= CreateCR_Click;
+                crButton.Click += LeaveCR_Click;
+                //crButton.Text = "Покинуть комнату";
+                //messages.Enabled = true;
+                //messageTextBox.Enabled = true;
+                //sendButton.Enabled = true;
+            }
+            else
+            {
+                nameList.DataSource = client.Chatrooms;
+                //nameList.SelectedIndex = -1;
+                //nameList.SelectionMode = SelectionMode.One;
+                crButton.Click -= LeaveCR_Click;
+                crButton.Click += CreateCR_Click;
+                //crButton.Text = "Создать комнату";
+                //messages.Enabled = false;
+                //messageTextBox.Enabled = false;
+                //sendButton.Enabled = false;
+            }
+        }
+
+        private void CreateCR_Click(object sender, EventArgs e)
+        {
+            var frm = new CreateChatroom(client);
+            frm.Location = this.Location;
+            frm.StartPosition = FormStartPosition.Manual;
+            frm.FormClosing += delegate { this.Show(); };
+            frm.Show();
+        }
+
+        private void LeaveCR_Click(object sender, EventArgs e)
+        {
+            Message message = new Message(Message.Header.LeaveCR);
+            message.addData(client.Chatroom.Id.ToString());
+            message.addData(client.User.Login);
+            client.sendMessage(message);
+        }
+
+        private void JoinCRButton_Click(object sender, EventArgs e)
+        {
+            if (nameList.SelectedIndex != - 1)
+            {
+                Message message = new Message(Message.Header.JoinCR);
+                message.addData(nameList.SelectedItem.ToString());
+                client.sendMessage(message);
+            }
+        }
+
+        private void NameList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (nameList.SelectedIndex != -1)
+                joinCRButton.Enabled = true;
+            else
+                joinCRButton.Enabled = false;
         }
     }
 }
