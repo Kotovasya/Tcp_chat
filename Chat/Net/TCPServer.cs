@@ -24,7 +24,6 @@ namespace Chat.Net
         protected int port;
         protected Thread checkDataThread;
         protected Thread checkListenerThread;
-        protected Thread checkRoomThread;
 
         public bool Running
         {
@@ -79,7 +78,6 @@ namespace Chat.Net
                 NetworkStream stream = new NetworkStream(socket);
                 IFormatter formatter = new BinaryFormatter();
                 Message message = (Message)formatter.Deserialize(stream);
-                Console.WriteLine("Тип полученого сообщения: " + message.Head);
                 return message;
             }
             catch (Exception ex)

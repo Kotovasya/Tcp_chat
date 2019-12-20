@@ -13,36 +13,14 @@ namespace Chat.Net
         private Header head;
         private List<string> messageList;
 
-        public Message(Header head, string message)
-        {
-            this.head = head;
-            this.messageList = new List<string>();
-            messageList.Add(message);
-        }
-
-        public Message(Header head, List<string> messages)
-        {
-            this.head = head;
-            this.messageList = messages;
-        }
-
         public Message(Header head)
         {
-            this.head = head;
-            this.messageList = new List<string>();
+            Head = head;
+            MessageList = null;
         }
 
-        public Header Head
-        {
-            get { return head; }
-            set { head = value; }
-        }
-
-        public List<string> MessageList
-        {
-            get { return messageList; }
-            set { messageList = value; }
-        }
+        public Header Head { get => head; set => head = value; }
+        public List<string> MessageList { get => messageList; set => messageList = value; }
 
         public void addData(string message)
         {

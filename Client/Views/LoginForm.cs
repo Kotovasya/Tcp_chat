@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Chat.Auth;
@@ -86,7 +87,7 @@ namespace Client
             {
                 try
                 {
-                    client = new Client();
+                    client = new Client(SynchronizationContext.Current);
                     client.IP = IPAddress.Parse("127.0.0.1");
                     client.Port = 2020;
                     client.connect();

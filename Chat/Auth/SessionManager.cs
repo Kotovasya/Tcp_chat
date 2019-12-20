@@ -65,6 +65,15 @@ namespace Chat.Auth
                 SessionList[index].User = new User(login, password);
         }
 
+        public void setUserCR(Guid token, int id)
+        {
+            int index = sessionList.FindIndex(m => m.Token == token);
+            if (index == -1)
+                throw new SessionUnknownException($"Сессия с токеном {token} не существует");
+            else
+                SessionList[index].User.IdChatroom = id;
+        }
+
         public User getUser(Guid token)
         {
             User user = sessionList.FirstOrDefault(m => m.Token == token).User;

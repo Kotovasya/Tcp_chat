@@ -48,6 +48,7 @@
             // 
             // messages
             // 
+            this.messages.Enabled = false;
             this.messages.FormattingEnabled = true;
             this.messages.ItemHeight = 16;
             this.messages.Location = new System.Drawing.Point(138, 75);
@@ -58,6 +59,7 @@
             // 
             // messageTextBox
             // 
+            this.messageTextBox.Enabled = false;
             this.messageTextBox.Location = new System.Drawing.Point(138, 455);
             this.messageTextBox.Name = "messageTextBox";
             this.messageTextBox.Size = new System.Drawing.Size(543, 22);
@@ -66,6 +68,7 @@
             // 
             // sendButton
             // 
+            this.sendButton.Enabled = false;
             this.sendButton.Location = new System.Drawing.Point(687, 455);
             this.sendButton.Name = "sendButton";
             this.sendButton.Size = new System.Drawing.Size(101, 28);

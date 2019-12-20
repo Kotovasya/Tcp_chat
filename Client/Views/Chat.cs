@@ -17,6 +17,7 @@ namespace Client.Views
     public partial class Chat : Form
     {
         Client client;
+        Action<bool> actionListChanged;
 
         public Chat(Client client)
         {
@@ -29,10 +30,11 @@ namespace Client.Views
             nameList.DataSource = client.Chatrooms;
             messages.DataSource = client.Messages;
 
-
             client.run();
 
-            client.changeList += changeList;
+            actionListChanged += changeList;
+            client.eventChangeUI += invokeIfNeeded;
+            client.eventException += clientException;
 
             Message message = new Message(Message.Header.GetCR);
             client.sendMessage(message);
@@ -68,34 +70,38 @@ namespace Client.Views
         }
 
         //Нужно сделать доступ в этом потоке к элементам формы
+        private void invokeIfNeeded(bool isJoin)
+        {
+            if (nameList.InvokeRequired)
+                nameList.Invoke(actionListChanged, isJoin);
+            else
+                actionListChanged(isJoin);
+        }
+
         private void changeList(bool isJoin)
         {
             if (isJoin)
             {
-                Message message = new Message(Message.Header.GetUsers);
-                message.addData(client.Chatroom.Id.ToString());
-                client.sendMessage(message);
                 nameList.DataSource = client.ChatUsers;
-                //nameList.SelectedIndex = -1;
-                //nameList.SelectionMode = SelectionMode.None;
+                nameList.SelectionMode = SelectionMode.None;
                 crButton.Click -= CreateCR_Click;
                 crButton.Click += LeaveCR_Click;
-                //crButton.Text = "Покинуть комнату";
-                //messages.Enabled = true;
-                //messageTextBox.Enabled = true;
-                //sendButton.Enabled = true;
+                crButton.Text = "Покинуть комнату";
+                messages.Enabled = true;
+                messageTextBox.Enabled = true;
+                sendButton.Enabled = true;
             }
             else
             {
                 nameList.DataSource = client.Chatrooms;
-                //nameList.SelectedIndex = -1;
-                //nameList.SelectionMode = SelectionMode.One;
+                nameList.SelectionMode = SelectionMode.One;
+                nameList.SelectedIndex = -1;
                 crButton.Click -= LeaveCR_Click;
                 crButton.Click += CreateCR_Click;
-                //crButton.Text = "Создать комнату";
-                //messages.Enabled = false;
-                //messageTextBox.Enabled = false;
-                //sendButton.Enabled = false;
+                crButton.Text = "Создать комнату";
+                messages.Enabled = false;
+                messageTextBox.Enabled = false;
+                sendButton.Enabled = false;
             }
         }
 
@@ -129,9 +135,14 @@ namespace Client.Views
         private void NameList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (nameList.SelectedIndex != -1)
-                joinCRButton.Enabled = true;
+                joinCRButton.Visible = true;
             else
-                joinCRButton.Enabled = false;
+                joinCRButton.Visible = false;
+        }
+
+        private void clientException(Exception ex)
+        {
+            MessageBox.Show("Соединение разорвано. Сервер не дал ответа", "Ошибка соединения", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

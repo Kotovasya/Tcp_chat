@@ -12,6 +12,7 @@ namespace Chat.ChatRoom
         private int id;
         private string name;
         private List<Session> users;
+        private List<string> messages;
 
         public Chatroom(int id, string name)
         {
@@ -23,6 +24,7 @@ namespace Chat.ChatRoom
         public int Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
         public List<Session> Users { get => users; set => users = value; }
+        public List<string> Messages { get => messages; set => messages = value; }
 
         public void addUser(Session session)
         {

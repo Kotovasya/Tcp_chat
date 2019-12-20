@@ -127,15 +127,19 @@ namespace Server
                         try
                         {
                             ChatroomManager.addChatroom(message.MessageList[0]);
+                            SessionManager.setUserCR(session.Token, ChatroomManager.Chatrooms.Last().Id);
                             ChatroomManager.Chatrooms.Last().addUser(session);
                             UserManager.setUserCR(ChatroomManager.Chatrooms.Last().Id, session.User.Login);
                             reply = new Message(Message.Header.CreateCR);
                             reply.addData("success");
-                            reply.addData(ChatroomManager.Count.ToString());
+                            reply.addData(ChatroomManager.Chatrooms.Last().Id.ToString());
                             reply.addData(message.MessageList[0]);
                             sendMessage(reply, session.Client.Client);
                             foreach (Session localsession in SessionManager.SessionList)
-                                shortSend(Message.Header.CreateCR, message.MessageList[0], localsession);
+                            {
+                                if (localsession.Token != session.Token)
+                                    shortSend(Message.Header.CreateCR, message.MessageList[0], localsession);
+                            }
                             Console.WriteLine($"Клиент ({session.User.Login}) создал комнату {message.MessageList[0]}");
                         }
                         catch (ChatroomAlreadyExistException ex)
@@ -159,14 +163,16 @@ namespace Server
                         break;
                     case Message.Header.JoinCR: // 0 - имя комнаты, 1 - имя пользователя, 2 - название комнаты
                         try
-                        {   //При получении сообщения, у клиента проверяем, находится ли он в комнате с таким же ID
+                        {   
                             chatroom = ChatroomManager.getChatroom(message.MessageList[0]);
+                            SessionManager.setUserCR(session.Token, chatroom.Id);
                             ChatroomManager.userJoin(chatroom.Id, session);
                             UserManager.setUserCR(chatroom.Id, session.User.Login);
                             reply = new Message(Message.Header.JoinCR);
                             reply.addData(chatroom.Id.ToString());
                             reply.addData(session.User.Login);
                             reply.addData(chatroom.Name);
+
                             foreach (Session localsession in chatroom.Users)
                                 sendMessage(reply, localsession.Client.Client);
                             Console.WriteLine($"Клиент ({session.User.Login}) зашел в комнату {chatroom.Name}");
@@ -217,11 +223,9 @@ namespace Server
                             SessionManager.setUser(session.Token, message.MessageList[0], message.MessageList[1]);
                             shortSend(Message.Header.Registration, "success", session);
                             Console.WriteLine($"Пользователь ({message.MessageList[0]}) зарегистрировался");
-                            foreach (Session localsession in SessionManager.SessionList)
-                            {
-                                if (localsession.Token != session.Token)
-                                    shortSend(Message.Header.NewUser, message.MessageList[0], localsession);
-                            }
+                            //foreach (Session localsession in SessionManager.SessionList)
+                            //    if (localsession.Token != session.Token)
+                            //        shortSend(Message.Header.NewUser, message.MessageList[0], localsession);
                         }
                         catch (Exception ex)
                         {
@@ -235,9 +239,9 @@ namespace Server
                             SessionManager.setUser(session.Token, message.MessageList[0], message.MessageList[1]);
                             shortSend(Message.Header.Login, "success", session);
                             Console.WriteLine($"Пользователь ({message.MessageList[0]}) авторизовался");
-                            foreach (Session localsession in SessionManager.SessionList)
-                                if (localsession.Token != session.Token)
-                                    shortSend(Message.Header.NewUser, message.MessageList[0], localsession);
+                            //foreach (Session localsession in SessionManager.SessionList)
+                            //    if (localsession.Token != session.Token)
+                            //        shortSend(Message.Header.NewUser, message.MessageList[0], localsession);
                         }
                         catch (Exception ex)
                         {

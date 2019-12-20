@@ -22,11 +22,13 @@ namespace Client
         private Thread checkDataThread;
         private bool haveCR;
         private Chatroom chatroom;
-        public delegate void del(bool join);
-        public event del changeList;
+        public delegate void changeUI(bool isJoin);
+        public delegate void exception(Exception ex);
+        public event changeUI eventChangeUI;
+        public event exception eventException;
 
 
-        public Client()
+        public Client(object state)
         {
             Messages = new ThreadedBindingList<string>();
             ChatUsers = new ThreadedBindingList<string>();
@@ -61,18 +63,25 @@ namespace Client
         {
             while (Connected)
             {
-                if (tcpClient.GetStream().DataAvailable)
+                try
                 {
-                    Message message = getMessage();
-
-                    if (message != null)
+                    if (tcpClient.GetStream().DataAvailable)
                     {
-                        Thread processData = new Thread(() => this.processData(message));
-                        processData.Start();
+                        Message message = getMessage();
+
+                        if (message != null)
+                        {
+                            Thread processData = new Thread(() => this.processData(message));
+                            processData.Start();
+                        }
                     }
                 }
+                catch(SocketException ex)
+                {
+                    eventException?.Invoke(ex);
+                }
+                Thread.Sleep(5);
             }
-            Thread.Sleep(5);
         }
 
         /// <summary>
@@ -104,18 +113,28 @@ namespace Client
                     break;
                 case Message.Header.JoinCR:
                     if (Chatroom != null)
+                    {
                         Messages.Add($"Пользователь {message.MessageList[1]} присоединился к чату");
+                        ChatUsers.Add(message.MessageList[1]);
+                    }
                     else
                     {
                         Chatroom = new Chatroom(int.Parse(message.MessageList[0]), message.MessageList[2]);
-                        changeList?.Invoke(true);
+                        Message reply = new Message(Message.Header.GetUsers);
+                        reply.addData(Chatroom.Id.ToString());
+                        sendMessage(reply);
+                        eventChangeUI?.Invoke(true);
                     }
                     break;
                 case Message.Header.CreateCR:
                     if (message.MessageList[0] == "success")
                     {
                         Chatroom = new Chatroom(int.Parse(message.MessageList[1]), message.MessageList[2]);
-                        changeList?.Invoke(true);
+                        Message reply = new Message(Message.Header.GetUsers);
+                        reply.addData(Chatroom.Id.ToString());
+                        sendMessage(reply);
+                        Chatrooms.Add(message.MessageList[2]);
+                        eventChangeUI?.Invoke(true);
                     }
                     else
                         Chatrooms.Add(message.MessageList[0]);
@@ -124,12 +143,15 @@ namespace Client
                     if (message.MessageList[0] == "success")
                     {
                         Chatroom = null;
-                        changeList?.Invoke(false);
+                        eventChangeUI?.Invoke(false);
                         Messages.Clear();
                         ChatUsers.Clear();
                     }
                     else
-                        Messages.Add(message.MessageList[1]);
+                    {
+                        ChatUsers.Remove(message.MessageList[1]);
+                        Messages.Add($"Пользователь {message.MessageList[1]} покинул чат");
+                    }
                     break;
                 case Message.Header.GetUsers:
                     foreach (string userName in message.MessageList)
