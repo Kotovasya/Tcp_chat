@@ -48,21 +48,15 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="ThreadBindingList.cs" />
-    <Compile Include="Views\Chat.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Views\Chat.cs" />
     <Compile Include="Views\Chat.Designer.cs">
       <DependentUpon>Chat.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\CreateChatroom.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Views\CreateChatroom.cs" />
     <Compile Include="Views\CreateChatroom.Designer.cs">
       <DependentUpon>CreateChatroom.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoginForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Views\LoginForm.cs" />
     <Compile Include="Views\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
@@ -99,11 +93,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Chat\Chat.csproj">
+    <ProjectReference Include="..\ChatLibrary\ChatLibrary.csproj">
       <Project>{66e23ce8-d513-433f-98c6-3047b1e2dccc}</Project>
-      <Name>Chat</Name>
+      <Name>ChatLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

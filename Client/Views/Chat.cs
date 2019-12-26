@@ -1,6 +1,4 @@
-﻿using Chat.Auth;
-using Chat.ChatRoom;
-using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Message = Chat.Net.Message;
+using Message = ChatLibrary.Net.Message;
 
 namespace Client.Views
 {
@@ -146,3 +144,4 @@ namespace Client.Views
         }
     }
 }
+*/

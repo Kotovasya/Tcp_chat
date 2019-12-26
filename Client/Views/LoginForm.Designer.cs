@@ -1,4 +1,4 @@
-﻿namespace Client
+﻿/*namespace Client
 {
     partial class LoginForm
     {
@@ -117,3 +117,4 @@
     }
 }
 
+*/

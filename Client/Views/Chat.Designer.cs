@@ -1,4 +1,4 @@
-﻿namespace Client.Views
+﻿/*namespace Client.Views
 {
     partial class Chat
     {
@@ -127,4 +127,4 @@
         private System.Windows.Forms.Button crButton;
         private System.Windows.Forms.Button joinCRButton;
     }
-}
+}*/

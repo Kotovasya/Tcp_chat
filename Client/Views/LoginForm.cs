@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,9 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Chat.Auth;
-using Chat.Net;
-using Message = Chat.Net.Message;
+using ChatLibrary.Net;
+using Message = ChatLibrary.Net.Message;
 
 namespace Client
 {
@@ -127,3 +126,4 @@ namespace Client
         }
     }
 }
+*/

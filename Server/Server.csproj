@@ -54,13 +54,13 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chat\Chat.csproj">
-      <Project>{66e23ce8-d513-433f-98c6-3047b1e2dccc}</Project>
-      <Name>Chat</Name>
-    </ProjectReference>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <ProjectReference Include="..\ChatLibrary\ChatLibrary.csproj">
+      <Project>{66e23ce8-d513-433f-98c6-3047b1e2dccc}</Project>
+      <Name>ChatLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

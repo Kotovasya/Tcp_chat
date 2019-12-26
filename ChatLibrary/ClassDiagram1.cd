@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ChatLibrary.ChatFolder.Chat" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>ChatFolder\Chat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.ChatFolder.FullChat" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IACAACABAEAAAAEAAAAAAACAAAAAAAAJAAAABQIAAAA=</HashCode>
+      <FileName>ChatFolder\FullChat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Exceptions.ChatroomAlreadyExistException" Collapsed="true">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\ChatroomAlreadyExistException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Exceptions.ChatroomUnknownException" Collapsed="true">
+    <Position X="13" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\ChatroomUnknownException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Exceptions.SessionAlreadyExistException" Collapsed="true">
+    <Position X="16.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\SessionAlreadyExistException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Exceptions.SessionUnknownException" Collapsed="true">
+    <Position X="7.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\SessionUnknownException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Exceptions.UserAlreadyExistException" Collapsed="true">
+    <Position X="14.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\UserAlreadyExistException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Exceptions.UserAlreadyInChatroom" Collapsed="true">
+    <Position X="16.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\UserAlreadyInChatroom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Exceptions.UserUnknownException" Collapsed="true">
+    <Position X="7.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\UserUnknownException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Exceptions.WrongLoginException" Collapsed="true">
+    <Position X="9.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\WrongLoginException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Exceptions.WrongPasswordException" Collapsed="true">
+    <Position X="11.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\WrongPasswordException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Managers.BaseManager" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AICEAACAAAAAIAAAQAAAAAAAAAAAACAAAQAAAAAEAAA=</HashCode>
+      <FileName>Managers\BaseManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Managers.ChatManager" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IACAAAAAAAAAAAAAEAAAAAAAAAAAAAAIAAAAAAIAAAA=</HashCode>
+      <FileName>Managers\ChatManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Managers.Manager&lt;T, K&gt;" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAQAQAAAAAAAAAAAAAAAAAACAAI=</HashCode>
+      <FileName>Managers\Manager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Managers.UserManager" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\UserManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.Attachment" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MessageFolder\Attachment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.ChatMessage" Collapsed="true">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAACQAAAAkAAAAAAQgABAAAAAQIAAAgCgAAAgA=</HashCode>
+      <FileName>MessageFolder\ChatMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MChangePassword" Collapsed="true">
+    <Position X="7.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABACAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>MessageFolder\MChangePassword.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MChangeRights" Collapsed="true">
+    <Position X="9.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAgQAAAAEAAAAAAAAAAAAACAAAAAgAA=</HashCode>
+      <FileName>MessageFolder\MChangeRights.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MConnect" Collapsed="true">
+    <Position X="11.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>MessageFolder\MConnect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MCreateChat" Collapsed="true">
+    <Position X="13" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MessageFolder\MCreateChat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MDeleteChat" Collapsed="true">
+    <Position X="14.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MessageFolder\MDeleteChat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MDeleteChatMessage" Collapsed="true">
+    <Position X="16.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAQAIAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MessageFolder\MDeleteChatMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MDisconnect" Collapsed="true">
+    <Position X="7.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>MessageFolder\MDisconnect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MEditChatMessage" Collapsed="true">
+    <Position X="9.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAAIAAAACA=</HashCode>
+      <FileName>MessageFolder\MEditChatMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MGetListChat" Collapsed="true">
+    <Position X="13" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAA=</HashCode>
+      <FileName>MessageFolder\MGetListChat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MJoinChat" Collapsed="true">
+    <Position X="14.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAgQAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MessageFolder\MJoinChat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MLeaveChat" Collapsed="true">
+    <Position X="16.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAgQAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MessageFolder\MLeaveChat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MLogin" Collapsed="true">
+    <Position X="7.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAQAgAAEAA=</HashCode>
+      <FileName>MessageFolder\MLogin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MRegistration" Collapsed="true">
+    <Position X="9.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAQAgAAEAA=</HashCode>
+      <FileName>MessageFolder\MRegistration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MRenameChat" Collapsed="true">
+    <Position X="11.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAEAQAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MessageFolder\MRenameChat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MRenameUser" Collapsed="true">
+    <Position X="13" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAgAAAAAAAQAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MessageFolder\MRenameUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.MessageFolder.MSendChatMessage" Collapsed="true">
+    <Position X="14.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAAIAAAACA=</HashCode>
+      <FileName>MessageFolder\MSendChatMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Net.Message" Collapsed="true">
+    <Position X="11.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAggAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Net\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Net.TCPClient" Collapsed="true">
+    <Position X="9.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAQAAAgAAAAAAgKAAAAAgAAAAgAAAkAAA=</HashCode>
+      <FileName>Net\TCPClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.Net.TCPServer" Collapsed="true">
+    <Position X="11.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAEAAIAAAAAAAABAIAAgIAgAAAgIAAAAEAAgAAA=</HashCode>
+      <FileName>Net\TCPServer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.UserFolder.ChatUser" Collapsed="true">
+    <Position X="14.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAABAAAAAQAAAAABAAAAAQAAAAAAAAAAAAQA=</HashCode>
+      <FileName>UserFolder\ChatUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.UserFolder.FullUser" Collapsed="true">
+    <Position X="5.5" Y="3.25" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="ChatLibrary.UserFolder.FullUser.disconnectDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>UserFolder\FullUser.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AACAAACAAAEAAAABAAAAAAAAEAAAABACAAAAAgAEAAA=</HashCode>
+      <FileName>UserFolder\FullUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChatLibrary.UserFolder.User" Collapsed="true">
+    <Position X="3.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAQAAAAEAAAAAABAAAAQQAAAEgA=</HashCode>
+      <FileName>UserFolder\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
