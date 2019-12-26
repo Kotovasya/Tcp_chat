@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestServer\CreateChat.cs" />
+    <Compile Include="TestServer\GetListChat.cs" />
     <Compile Include="TestServer\LoginUser.cs" />
     <Compile Include="TestServer\RegistrationUser.cs" />
   </ItemGroup>

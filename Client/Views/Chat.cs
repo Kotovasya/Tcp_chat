@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,7 +25,7 @@ namespace Client.Views
 
         private void Chat_Load(object sender, EventArgs e)
         {
-            nameList.DataSource = client.Chatrooms;
+            nameList.DataSource = client.AllChatrooms;
             messages.DataSource = client.Messages;
 
             client.run();
@@ -91,7 +91,7 @@ namespace Client.Views
             }
             else
             {
-                nameList.DataSource = client.Chatrooms;
+                nameList.DataSource = client.AllChatrooms;
                 nameList.SelectionMode = SelectionMode.One;
                 nameList.SelectedIndex = -1;
                 crButton.Click -= LeaveCR_Click;
@@ -122,7 +122,7 @@ namespace Client.Views
 
         private void JoinCRButton_Click(object sender, EventArgs e)
         {
-            if (nameList.SelectedIndex != - 1)
+            if (nameList.SelectedIndex != -1)
             {
                 Message message = new Message(Message.Header.JoinCR);
                 message.addData(nameList.SelectedItem.ToString());
@@ -144,4 +144,3 @@ namespace Client.Views
         }
     }
 }
-*/

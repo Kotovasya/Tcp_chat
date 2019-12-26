@@ -26,16 +26,14 @@ namespace UnitTests.TestServer
             server.BaseManager.add(0, new FullUser(new User(0, "Kotovasya"), "228"));
             server.OnlineManager.add(client, null);
 
+            UserManager testOnlineManager = new UserManager();
+            testOnlineManager.add(client, null);
+            testOnlineManager.set(client, new User(0, "Kotovasya"));
+
             MLogin messageLogin = new MLogin("Kotovasya", "228");
-            try
-            {
-                server.acceptLogin(client, messageLogin);
-            }
-            catch (SuccessfullyLoginException)
-            {
-                return;
-            }
-            Assert.Fail("Авторизация не была произведена");
+            server.acceptLogin(client, messageLogin);
+
+            Assert.IsTrue(server.OnlineManager.Equals(testOnlineManager), "Авторизация не была произведена");
         }
 
         [TestMethod]

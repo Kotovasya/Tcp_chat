@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -101,7 +101,8 @@ namespace Client
             var frm = new Views.Chat(client);
             frm.Location = this.Location;
             frm.StartPosition = FormStartPosition.Manual;
-            frm.FormClosing += delegate {
+            frm.FormClosing += delegate
+            {
                 client = null;
                 this.Show();
             };
@@ -126,4 +127,3 @@ namespace Client
         }
     }
 }
-*/

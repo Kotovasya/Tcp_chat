@@ -1,4 +1,4 @@
-﻿/*using ChatLibrary.Net;
+﻿using ChatLibrary.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using ChatLibrary.UserFolder;
 using ChatLibrary.ChatFolder;
 using ChatLibrary.MessageFolder;
+using ChatLibrary.Exceptions;
+using ChatLibrary.Managers;
 
 namespace Client
 {
@@ -17,12 +19,15 @@ namespace Client
     {
         private ThreadedBindingList<string> chatUsers;
         private ThreadedBindingList<string> messages;
-        private ThreadedBindingList<string> chatrooms;
+        private ThreadedBindingList<Chat> allChatrooms;
+        private ChatManager chatManager;
         private FullUser user;
         private Thread checkConnection;
         private Thread checkDataThread;
         private bool haveCR;
         private FullChat chatroom;
+        private List<User> online;
+
         public delegate void changeUI(bool isJoin);
         public delegate void exception(Exception ex);
         public event changeUI eventChangeUI;
@@ -33,7 +38,7 @@ namespace Client
         {
             Messages = new ThreadedBindingList<string>();
             ChatUsers = new ThreadedBindingList<string>();
-            Chatrooms = new ThreadedBindingList<string>();
+            AllChatrooms = new ThreadedBindingList<Chat>();
         }
 
         public FullUser User { get => user; set => user = value; }
@@ -43,7 +48,9 @@ namespace Client
         public Thread CheckDataThread { get => checkDataThread; set => checkDataThread = value; }
         public bool HaveCR { get => haveCR; set => haveCR = value; }
         public FullChat Chatroom { get => chatroom; set => chatroom = value; }
-        public ThreadedBindingList<string> Chatrooms { get => chatrooms; set => chatrooms = value; }
+        public ThreadedBindingList<Chat> AllChatrooms { get => allChatrooms; set => allChatrooms = value; }
+        public ChatManager ChatManager { get => chatManager; set => chatManager = value; }
+        public List<User> Online { get => online; set => online = value; }
 
         /// <summary>
         /// Запустить потоки для обработки клиентом входящих сообщений
@@ -118,16 +125,16 @@ namespace Client
                     acceptDisconnect(message.Content as MDisconnect);
                     break;
                 case Message.Header.GetListChat:
-                    acceptGetListChat(message.Content as FullChat);
+                    acceptGetListChat(message.Content as List<Chat>);
                     break;
                 case Message.Header.CreateChat:
-                    acceptCreateChat(message.Content as MCreateChat);
+                    acceptCreateChat(message);
                     break;
                 case Message.Header.DeleteChat:
                     acceptDeleteChat(message);
                     break;
                 case Message.Header.JoinChat:
-                    acceptJoinChat(message.Content as MJoinChat);
+                    acceptJoinChat(message);
                     break;
                 case Message.Header.LeaveChat:
                     acceptLeaveChat(message.Content as MLeaveChat);
@@ -150,9 +157,6 @@ namespace Client
                 case Message.Header.RenameUser:
                     acceptReameUser(message.Content as MRenameUser);
                     break;
-                case Message.Header.ChangePassword:
-                    acceptChangePassword(message.Content as MChangePassword);
-                    break;
             }
         }
 
@@ -161,7 +165,12 @@ namespace Client
             if (message.Content.GetType() == typeof(FullUser))
                 User = user;
             else //если регистрация прошла не успешно
-            { }
+            {
+                if (message.Content as string == "Пользователь с таким именем уже существует")
+                    eventException?.Invoke(new UserAlreadyExistException("Пользователь с таким именем уже существует"));
+                else
+                    eventException?.Invoke(new Exception(message.Content as string));
+            }
         }
 
         public void acceptLogin(Message message)
@@ -169,7 +178,12 @@ namespace Client
             if (message.Content.GetType() == typeof(FullUser))
                 User = user;
             else //если авторизация прошла не успешно
-            { }
+            {
+                if (message.Content as string == "Пользователь с таким именем не зарегистрирован")
+                    eventException?.Invoke(new WrongLoginException("Пользователь с таким именем не зарегистрирован"));
+                else
+                    eventException?.Invoke(new WrongPasswordException(message.Content as string));
+            }
         }
 
         public void acceptDisconnect(MDisconnect message)
@@ -177,125 +191,100 @@ namespace Client
 
         }
 
-        public void acceptGetListChat(FullChat chat)
+        public void acceptGetListChat(List<Chat> chats)
         {
-            List<Chat> chats = new List<Chat>();
-            ChatManager.Chats.ForEach(item => chats.Add(item.ToChat()));
-            sendMessage(new Message(Message.Header.GetListChat, new MGetListChat(chats)), client.Client);
+            foreach (Chat chat in chats)
+                AllChatrooms.Add(chat);
         }
 
-        public void acceptCreateChat(MCreateChat message)
+        public void acceptCreateChat(Message message)
         {
-            FullChat newChat = ChatManager.newChat(message.Name, OnlineManager.getUser(client).UserInfo);
-            sendMessage(new Message(Message.Header.CreateChat, newChat), client.Client);
-            foreach (KeyValuePair<TcpClient, FullUser> user in OnlineManager.UserList)
+            if (message.Content.GetType() == typeof(FullChat)) //Если этот чат создал этот клиент
             {
-                if (user.Value != null)
-                    if (user.Key.Client != client.Client)
-                        sendMessage(new Message(Message.Header.CreateChat, newChat.ToChat()), user.Key.Client);
+                FullChat content = message.Content as FullChat;
+                ChatManager.add(content.Id, content);
+            }
+            else
+            {
+                AllChatrooms.Add(message.Content as Chat);
             }
         }
 
         public void acceptDeleteChat(Message message)
         {
-            ChatManager.removeChat((message.Content as MDeleteChat).IdChat);
-            foreach (KeyValuePair<TcpClient, FullUser> user in OnlineManager.UserList)
+            if (Chatroom.Equals(message.Content as Chat)) //если активный чат был удален
             {
-                if (user.Value != null)
-                {
-                    sendMessage(message, user.Key.Client);
-                }
+                ChatManager.remove((message.Content as Chat).Id);
             }
+            AllChatrooms.Remove(message.Content as Chat);
         }
 
-        public void acceptJoinChat(MJoinChat message)
+        public void acceptJoinChat(Message message)
         {
-            ChatManager.userJoin(message.IdChat, OnlineManager.getUser(client).UserInfo);
-            sendMessage(new Message(Message.Header.JoinChat, ChatManager.getChat(message.IdChat)), client.Client);
-            foreach (KeyValuePair<TcpClient, FullUser> user in OnlineManager.UserList)
+            if (int.TryParse(message.Content as string, out int result)) //если мы только что вошли в чат
             {
-                if (user.Value != null)
-                    if (user.Key.Client != client.Client)
-                        sendMessage(new Message(Message.Header.JoinChat, message), user.Key.Client);
+                
             }
+            else if (message.Content is MJoinChat) //если в чат зашел другой пользователь
+            {
+                MJoinChat content = message.Content as MJoinChat;
+                FullChat chat = ChatManager.get(content.IdChat); //если мы посещали этот чат
+                if (chat != null)
+                {
+                    if (Chatroom == chat) //если в активный чат вошел пользователь
+                    {
+
+                    }
+                    ChatManager.userJoin(chat.Id, Online.FirstOrDefault(m => m.Id == content.IdUser));
+                }
+            }
+            
         }
 
         public void acceptLeaveChat(MLeaveChat message)
         {
-            ChatManager.userLeave(message.IdChat, OnlineManager.getUser(client).UserInfo);
-            foreach (KeyValuePair<TcpClient, FullUser> user in OnlineManager.UserList)
+            FullChat chat = ChatManager.get(message.IdChat); //если мы посещали этот чат
+            if (chat != null)
             {
-                if (user.Value != null)
-                    if (user.Key.Client != client.Client)
-                        sendMessage(new Message(Message.Header.LeaveChat, message), user.Key.Client);
+                if (Chatroom == chat) //если из активного чата вышел пользователь
+                {
+
+                }
+                ChatManager.userLeave(chat.Id, Online.FirstOrDefault(m => m.Id == message.IdUser));
             }
         }
 
         public void acceptSendChatMessage(MSendChatMessage message)
         {
-            ChatManager.getChat(message.IdChat).addMessage(message.Message);
-            foreach (KeyValuePair<TcpClient, FullUser> user in OnlineManager.UserList)
-            {
-                if (user.Value != null)
-                    sendMessage(new Message(Message.Header.SendChatMessage, message), user.Key.Client);
-            }
+            FullChat chat = ChatManager.get(message.IdChat);
+            chat.addMessage(message.Message);
         }
 
         public void acceptEditChatMessage(MEditChatMessage message)
         {
-            ChatManager.getChat(message.IdChat).editMessage(message.Message);
-            foreach (KeyValuePair<TcpClient, FullUser> user in OnlineManager.UserList)
-            {
-                if (user.Value != null)
-                    sendMessage(new Message(Message.Header.EditChatMessage, message), user.Key.Client);
-            }
+            FullChat chat = ChatManager.get(message.IdChat);
+            chat.editMessage(message.Message);
         }
 
         public void acceptDeleteChatMessage(MDeleteChatMessage message)
         {
-            ChatManager.getChat(message.IdChat).deleteMessage(message.IdMessage);
-            foreach (KeyValuePair<TcpClient, FullUser> user in OnlineManager.UserList)
-            {
-                if (user.Value != null)
-                    sendMessage(new Message(Message.Header.DeleteChatMessage, message), user.Key.Client);
-            }
+            FullChat chat = ChatManager.get(message.IdChat);
+            chat.deleteMessage(message.IdMessage);
         }
 
         public void acceptChangeRights(MChangeRights message)
         {
             ChatManager.changeRights(message.IdChat, message.IdUser, message.Rights);
-            foreach (KeyValuePair<TcpClient, FullUser> user in OnlineManager.UserList)
-            {
-                if (user.Value != null)
-                    sendMessage(new Message(Message.Header.ChangeRights, message), user.Key.Client);
-            }
         }
 
         public void acceptRenameChat(MRenameChat message)
         {
             ChatManager.rename(message.IdChat, message.Name);
-            foreach (KeyValuePair<TcpClient, FullUser> user in OnlineManager.UserList)
-            {
-                if (user.Value != null)
-                    sendMessage(new Message(Message.Header.RenameChat, message), user.Key.Client);
-            }
         }
 
         public void acceptReameUser(MRenameUser message)
         {
-            BaseManager.renameUser(message.IdUser, message.Name);
-            OnlineManager.changeUsername(client, message.Name);
-            foreach (KeyValuePair<TcpClient, FullUser> user in OnlineManager.UserList)
-            {
-                if (user.Value != null)
-                    sendMessage(new Message(Message.Header.RenameUser, message), user.Key.Client);
-            }
-        }
-
-        public void acceptChangePassword(MChangePassword message)
-        {
-            BaseManager.changePassword(message.Id, message.NewPassowrd);
+            Online.FirstOrDefault(m => m.Id == message.IdUser).Login = message.Name;
         }
     }
 }
-*/

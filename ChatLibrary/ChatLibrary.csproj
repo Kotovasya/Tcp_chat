@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="ChatFolder\Chat.cs" />
     <Compile Include="ChatFolder\FullChat.cs" />
-    <Compile Include="Exceptions\SuccessfullyLoginException.cs" />
     <Compile Include="Managers\BaseManager.cs" />
     <Compile Include="Managers\ChatManager.cs" />
     <Compile Include="Managers\Manager.cs" />

@@ -19,9 +19,8 @@ namespace ChatLibrary.ChatFolder
         {
             this.Id = id;
             this.Name = name;
-            this.Users = null;
             this.Messages = null;
-            Users = new List<ChatUser> { new ChatUser(user, 8) };
+            this.Users = new List<ChatUser> { new ChatUser(user, 8) };
         }
 
         public List<ChatUser> Users { get => users; set => users = value; }

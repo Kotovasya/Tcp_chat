@@ -201,7 +201,6 @@ namespace Server
                 sendMessage(new Message(Message.Header.Login, "Неверный пароль"), client.Client);
                 throw new WrongPasswordException("Неверный пароль"); // Unit Test
             }
-            throw new SuccessfullyLoginException(""); // Unit Test
         }
 
         public void acceptDisconnect(TcpClient client, MDisconnect message)
@@ -276,51 +275,61 @@ namespace Server
 
         public void acceptSendChatMessage(MSendChatMessage message)
         {
-            ChatManager.get(message.IdChat).addMessage(message.Message);
+            FullChat chat = ChatManager.get(message.IdChat);
+            chat.addMessage(message.Message);
             foreach (KeyValuePair<TcpClient, User> user in OnlineManager.List)
             {
                 if (user.Value != null)
-                    sendMessage(new Message(Message.Header.SendChatMessage, message), user.Key.Client);
+                    if (chat.Users.FirstOrDefault(m => m.User.Id == user.Value.Id) != null)
+                        sendMessage(new Message(Message.Header.SendChatMessage, message), user.Key.Client);
             }
         }
 
         public void acceptEditChatMessage(MEditChatMessage message)
         {
-            ChatManager.get(message.IdChat).editMessage(message.Message);
+            FullChat chat = ChatManager.get(message.IdChat);
+            chat.editMessage(message.Message);
             foreach (KeyValuePair<TcpClient, User> user in OnlineManager.List)
             {
                 if (user.Value != null)
-                    sendMessage(new Message(Message.Header.EditChatMessage, message), user.Key.Client);
+                    if (chat.Users.FirstOrDefault(m => m.User.Id == user.Value.Id) != null)
+                        sendMessage(new Message(Message.Header.EditChatMessage, message), user.Key.Client);
             }
         }
 
         public void acceptDeleteChatMessage(MDeleteChatMessage message)
         {
-            ChatManager.get(message.IdChat).deleteMessage(message.IdMessage);
+            FullChat chat = ChatManager.get(message.IdChat);
+            chat.deleteMessage(message.IdMessage);
             foreach (KeyValuePair<TcpClient, User> user in OnlineManager.List)
             {
                 if (user.Value != null)
-                    sendMessage(new Message(Message.Header.DeleteChatMessage, message), user.Key.Client);
+                    if (chat.Users.FirstOrDefault(m => m.User.Id == user.Value.Id) != null)
+                        sendMessage(new Message(Message.Header.DeleteChatMessage, message), user.Key.Client);
             }
         }
 
         public void acceptChangeRights(MChangeRights message)
         {
-            ChatManager.changeRights(message.IdChat, message.IdUser, message.Rights);
+            FullChat chat = ChatManager.get(message.IdChat);
+            chat.changeRights(message.IdUser, message.Rights);
             foreach (KeyValuePair<TcpClient, User> user in OnlineManager.List)
             {
                 if (user.Value != null)
-                    sendMessage(new Message(Message.Header.ChangeRights, message), user.Key.Client);
+                    if (chat.Users.FirstOrDefault(m => m.User.Id == user.Value.Id) != null)
+                        sendMessage(new Message(Message.Header.ChangeRights, message), user.Key.Client);
             }
         }
 
         public void acceptRenameChat(MRenameChat message)
         {
-            ChatManager.rename(message.IdChat, message.Name);
+            FullChat chat = ChatManager.get(message.IdChat);
+            chat.rename(message.Name);
             foreach (KeyValuePair<TcpClient, User> user in OnlineManager.List)
             {
                 if (user.Value != null)
-                    sendMessage(new Message(Message.Header.RenameChat, message), user.Key.Client);
+                    if (chat.Users.FirstOrDefault(m => m.User.Id == user.Value.Id) != null)
+                        sendMessage(new Message(Message.Header.RenameChat, message), user.Key.Client);
             }
         }
 
